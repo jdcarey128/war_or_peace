@@ -8,24 +8,25 @@ class Turn
   end
 
   def type
-    if p1_card_rank != p2_card_rank
+    if player1.deck.rank_of_card_at(0) != player2.deck.rank_of_card_at(0)
       :basic
-    else
+    elsif player1.deck.rank_of_card_at(2) != player2.deck.rank_of_card_at(2)
       :war
+    else
+      :mutually_assured_destruction
     end
   end
 
-  def p1_card_rank
-    player1.deck.cards[0].rank
-  end
-
-  def p2_card_rank
-    player2.deck.cards[0].rank
-  end
-
   def winner
-    return player1.name if p1_card_rank > p2_card_rank
-    return player2.name if p1_card_rank < p2_card_rank
+    if type == :basic
+      return player1.name if player1.deck.rank_of_card_at(0) > player2.deck.rank_of_card_at(0)
+      return player2.name if player1.deck.rank_of_card_at(0) < player2.deck.rank_of_card_at(0)
+    elsif type == :war
+      return player1.name if player1.deck.rank_of_card_at(2) > player2.deck.rank_of_card_at(2)
+      return player2.name if player1.deck.rank_of_card_at(2) < player2.deck.rank_of_card_at(2)
+    else
+      "No Winner"
+    end
   end
 
   def pile_cards
@@ -33,9 +34,16 @@ class Turn
       @spoils_of_war << player1.deck.cards.shift
       @spoils_of_war << player2.deck.cards.shift
     elsif type == :war
+      @spoils_of_war << player1.deck.cards[0..2]
+      @spoils_of_war << player2.deck.cards[0..2]
+      @spoils_of_war.flatten!
+      3.times {player1.deck.cards.shift}
+      3.times {player2.deck.cards.shift}
     else
+      3.times {player1.deck.cards.shift}
+      3.times {player2.deck.cards.shift}
     end
-  end 
+  end
 
   def award_spoils(winner_arg)
     if winner_arg == player1.name

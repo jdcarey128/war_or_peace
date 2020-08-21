@@ -18,10 +18,6 @@ class Player
     @deck.rank_of_card_at(2)
   end
 
-  def remove_top_card
-    @deck.cards.shift
-  end
-
   def top_three_cards
     @deck.cards[0..2]
   end

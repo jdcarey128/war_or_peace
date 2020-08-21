@@ -8,77 +8,69 @@ require './lib/player'
 
 class PlayerTest < Minitest::Test
 
-  def test_it_exists
-    card1 = Card.new(:diamond, 'Queen', 12)
-    card2 = Card.new(:spade, '3', 3)
-    card3 = Card.new(:heart, 'Ace', 14)
-    deck = Deck.new([card1, card2, card3])
-    player = Player.new('Clarisa', deck)
+  def setup
+    @card1 = Card.new(:diamond, 'Queen', 12)
+    @card2 = Card.new(:spade, '3', 3)
+    @card3 = Card.new(:heart, 'Ace', 14)
+    @deck = Deck.new([@card1, @card2, @card3])
+    @player = Player.new('Clarisa', @deck)
+  end
 
-    assert_instance_of Player, player
+  def test_it_exists
+
+    assert_instance_of Player, @player
+  end
+
+  def test_it_can_return_rank_of_first_card
+
+    assert_equal 12, @player.rank_of_first_card
+  end
+
+  def test_it_can_return_rank_of_third_card
+
+    assert_equal 14, @player.rank_of_third_card
+  end
+
+  def test_it_can_return_top_three_cards
+
+    assert_equal @deck.cards, @player.top_three_cards
   end
 
   def test_player_has_attributes
-    card1 = Card.new(:diamond, 'Queen', 12)
-    card2 = Card.new(:spade, '3', 3)
-    card3 = Card.new(:heart, 'Ace', 14)
-    deck = Deck.new([card1, card2, card3])
-    player = Player.new('Clarisa', deck)
 
-    assert_equal "Clarisa", player.name
-    assert_equal deck, player.deck
+    assert_equal "Clarisa", @player.name
+    assert_equal @deck, @player.deck
   end
 
   def test_player_has_not_lost
-    card1 = Card.new(:diamond, 'Queen', 12)
-    card2 = Card.new(:spade, '3', 3)
-    card3 = Card.new(:heart, 'Ace', 14)
-    deck = Deck.new([card1, card2, card3])
-    player = Player.new('Clarisa', deck)
 
-    assert_equal false, player.has_lost?
+    assert_equal false, @player.has_lost?
   end
 
   def test_player_loses_top_card
-    card1 = Card.new(:diamond, 'Queen', 12)
-    card2 = Card.new(:spade, '3', 3)
-    card3 = Card.new(:heart, 'Ace', 14)
-    deck = Deck.new([card1, card2, card3])
-    player = Player.new('Clarisa', deck)
 
-    assert_equal card1, player.deck.remove_card
+    assert_equal @card1, @player.deck.remove_card
   end
 
   def test_player_does_not_lose_if_they_have_cards
-    card1 = Card.new(:diamond, 'Queen', 12)
-    card2 = Card.new(:spade, '3', 3)
-    card3 = Card.new(:heart, 'Ace', 14)
-    deck = Deck.new([card1, card2, card3])
-    player = Player.new('Clarisa', deck)
 
-    assert_equal false, player.has_lost?
+    assert_equal false, @player.has_lost?
 
-    player.deck.remove_card
-    assert_equal false, player.has_lost?
+    @player.deck.remove_card
+    assert_equal false, @player.has_lost?
 
-    player.deck.remove_card
-    assert_equal false, player.has_lost?
+    @player.deck.remove_card
+    assert_equal false, @player.has_lost?
   end
 
   def test_player_loses_when_cards_are_gone_aaa
-    card1 = Card.new(:diamond, 'Queen', 12)
-    card2 = Card.new(:spade, '3', 3)
-    card3 = Card.new(:heart, 'Ace', 14)
-    deck = Deck.new([card1, card2, card3])
-    player = Player.new('Clarisa', deck)
 
-    assert_equal false, player.has_lost?
+    assert_equal false, @player.has_lost?
 
-    player.deck.remove_card
-    player.deck.remove_card
-    player.deck.remove_card
-    assert_equal true, player.has_lost?
-    assert_equal deck, player.deck
+    @player.deck.remove_card
+    @player.deck.remove_card
+    @player.deck.remove_card
+    assert_equal true, @player.has_lost?
   end
 
 end

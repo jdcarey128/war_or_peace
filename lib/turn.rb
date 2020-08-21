@@ -8,22 +8,30 @@ class Turn
   end
 
   def type
-    if player1.deck.rank_of_card_at(0) != player2.deck.rank_of_card_at(0)
+    if first_card_not_equal
       :basic
-    elsif player1.deck.rank_of_card_at(2) != player2.deck.rank_of_card_at(2)
+    elsif third_card_not_equal
       :war
     else
       :mutually_assured_destruction
     end
   end
 
+  def first_card_not_equal
+    @player1.rank_of_first_card != @player2.rank_of_first_card
+  end
+
+  def third_card_not_equal
+    @player1.rank_of_third_card != @player2.rank_of_third_card
+  end
+
   def winner
     if type == :basic
-      return player1.name if player1.deck.rank_of_card_at(0) > player2.deck.rank_of_card_at(0)
-      return player2.name if player1.deck.rank_of_card_at(0) < player2.deck.rank_of_card_at(0)
+      return player1.name if @player1.rank_of_first_card > @player2.rank_of_first_card
+      return player2.name if @player1.rank_of_first_card < @player2.rank_of_first_card
     elsif type == :war
-      return player1.name if player1.deck.rank_of_card_at(2) > player2.deck.rank_of_card_at(2)
-      return player2.name if player1.deck.rank_of_card_at(2) < player2.deck.rank_of_card_at(2)
+      return player1.name if @player1.rank_of_third_card > @player2.rank_of_third_card
+      return player2.name if @player1.rank_of_third_card < @player2.rank_of_third_card
     else
       "No Winner"
     end
@@ -31,26 +39,26 @@ class Turn
 
   def pile_cards
     if type == :basic
-      @spoils_of_war << player1.deck.cards.shift
-      @spoils_of_war << player2.deck.cards.shift
+      @spoils_of_war << player1.remove_top_card
+      @spoils_of_war << player2.remove_top_card
     elsif type == :war
-      @spoils_of_war << player1.deck.cards[0..2]
-      @spoils_of_war << player2.deck.cards[0..2]
+      @spoils_of_war << player1.top_three_cards
+      @spoils_of_war << player2.top_three_cards
       @spoils_of_war.flatten!
-      3.times {player1.deck.cards.shift}
-      3.times {player2.deck.cards.shift}
+      3.times {player1.remove_top_card}
+      3.times {player2.remove_top_card}
     else
-      3.times {player1.deck.cards.shift}
-      3.times {player2.deck.cards.shift}
+      3.times {player1.remove_top_card}
+      3.times {player2.remove_top_card}
     end
   end
 
   def award_spoils(winner_arg)
     if winner_arg == player1.name
-      (player1.deck.cards << @spoils_of_war).flatten!
+      (player1.deck.add_card(@spoils_of_war)).flatten!
       @spoils_of_war = []
     else
-      (player2.deck.cards.push @spoils_of_war).flatten!
+      (player2.deck.add_card(@spoils_of_war)).flatten!
       @spoils_of_war = []
     end
   end

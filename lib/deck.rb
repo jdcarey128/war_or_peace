@@ -29,4 +29,8 @@ class Deck
     @cards.push(card)
   end
 
+  def empty?
+    @cards.empty?
+  end 
+
 end

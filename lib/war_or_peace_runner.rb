@@ -46,10 +46,14 @@ player1 = Player.new("Megan", deck1)
 player2 = Player.new("Aurora", deck2)
 turn = Turn.new(player1, player2)
 
-p """Welcome to War! (or Peace) This game will be played with #{deck_count} cards.
-The players today are #{player1.name} and #{player2.name}.
+puts """Welcome to War! (or Peace) This game will be played with #{deck_count} cards. The players today are #{player1.name} and #{player2.name}.
 Type 'GO' to start the game!"""
 
-start = gets.chomp
+start = gets.chomp.downcase
 
-turn.start_gameplay if start == ""
+until start == "go"
+  puts "Type 'GO' to start the game!"
+  start = gets.chomp.downcase
+end
+
+turn.start_gameplay

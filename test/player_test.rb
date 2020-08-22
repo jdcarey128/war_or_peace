@@ -13,7 +13,9 @@ class PlayerTest < Minitest::Test
     @card2 = Card.new(:spade, '3', 3)
     @card3 = Card.new(:heart, 'Ace', 14)
     @deck = Deck.new([@card1, @card2, @card3])
+    @deck2 = Deck.new([@card1,@card2])
     @player = Player.new('Clarisa', @deck)
+    @player2 = Player.new('Claris', @deck2)
   end
 
   def test_it_exists
@@ -31,9 +33,19 @@ class PlayerTest < Minitest::Test
     assert_equal 14, @player.rank_of_third_card
   end
 
+  def test_it_can_return_nil_if_third_card_is_not_there
+
+    assert_nil @player2.rank_of_third_card
+  end
+
   def test_it_can_return_top_three_cards
 
     assert_equal @deck.cards, @player.top_three_cards
+  end
+
+  def test_it_can_return_amount_of_cards
+
+    assert_equal 3, @deck.cards.length
   end
 
   def test_player_has_attributes
@@ -52,18 +64,7 @@ class PlayerTest < Minitest::Test
     assert_equal @card1, @player.deck.remove_card
   end
 
-  def test_player_does_not_lose_if_they_have_cards
-
-    assert_equal false, @player.has_lost?
-
-    @player.deck.remove_card
-    assert_equal false, @player.has_lost?
-
-    @player.deck.remove_card
-    assert_equal false, @player.has_lost?
-  end
-
-  def test_player_loses_when_cards_are_gone_aaa
+  def test_player_loses_when_cards_are_gone
 
     assert_equal false, @player.has_lost?
 

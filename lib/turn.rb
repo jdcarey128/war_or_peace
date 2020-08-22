@@ -28,13 +28,28 @@ class Turn
 
   def winner
     if type == :basic
-      return player1.name if @player1.rank_of_first_card > @player2.rank_of_first_card
-      return player2.name if @player1.rank_of_first_card < @player2.rank_of_first_card
+      if player1.rank_of_first_card == nil || player2.rank_of_first_card == nil
+        return player2.name if @player1.rank_of_first_card == nil
+        return player1.name if @player2.rank_of_first_card == nil
+      else
+        return player1.name if @player1.rank_of_first_card > @player2.rank_of_first_card
+        return player2.name if @player1.rank_of_first_card < @player2.rank_of_first_card
+      end
     elsif type == :war
-      return player1.name if @player1.rank_of_third_card > @player2.rank_of_third_card
-      return player2.name if @player1.rank_of_third_card < @player2.rank_of_third_card
+      if player1.rank_of_third_card == nil || player2.rank_of_third_card == nil
+        return player2.name if @player1.rank_of_third_card == nil
+        return player1.name if @player2.rank_of_third_card == nil
+      else
+        return player1.name if @player1.rank_of_third_card > @player2.rank_of_third_card
+        return player2.name if @player1.rank_of_third_card < @player2.rank_of_third_card
+      end
     else
-      "No Winner"
+      if player1.rank_of_third_card == nil || player2.rank_of_third_card == nil
+        return player2.name if @player1.rank_of_third_card == nil
+        return player1.name if @player2.rank_of_third_card == nil
+      else
+        "No Winner"
+      end
     end
   end
 
@@ -65,20 +80,49 @@ class Turn
   end
 
   def start_gameplay
-    until player1.has_lost? || player2.has_lost?
+    until continue_game? == false
       if type == :basic
         pile_cards
         p "Turn #{@turn_count}: #{winner} won #{@spoils_of_war.length} cards"
         award_spoils(winner)
+        continue_game?
       elsif type == :war
         pile_cards
         p "Turn #{@turn_count}: WAR - #{winner} won #{@spoils_of_war.length} cards"
         award_spoils(winner)
+        continue_game?
       else
         pile_cards
         p "Turn #{@turn_count}: *mutually assured destruction* 6 cards removed from play"
+        continue_game?
       end
       @turn_count += 1
     end
+
+    if @turn_count >= 1000000
+      p "---- DRAW ----"
+    else
+      game_winner
+    end
+
   end
+
+  def continue_game?
+    if player1.amount_of_cards == 0 || player2.amount_of_cards == 0
+      winner
+      false
+    elsif player1.amount_of_cards < 3 || player2.amount_of_cards < 3
+      if type == :war || type == :mutually_assured_destruction
+        winner
+        false
+      end
+    elsif @turn_count >= 1000000
+      false
+    end
+  end
+
+  def game_winner
+    p "*~*~*~* #{winner} has won the game! *~*~*~*"
+  end
+
 end

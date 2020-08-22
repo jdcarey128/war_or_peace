@@ -22,4 +22,8 @@ class Player
     @deck.cards[0..2]
   end
 
+  def amount_of_cards
+    @deck.cards.length
+  end
+
 end

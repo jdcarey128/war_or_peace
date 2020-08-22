@@ -1,10 +1,11 @@
 class Turn
-  attr_reader :player1, :player2, :spoils_of_war
+  attr_reader :player1, :player2, :spoils_of_war, :turn_count
 
   def initialize(player1, player2)
     @player1 = player1
     @player2 = player2
     @spoils_of_war = []
+    @turn_count = 1
   end
 
   def type
@@ -65,20 +66,19 @@ class Turn
 
   def start_gameplay
     until player1.has_lost? || player2.has_lost?
-      turn_count = 1
       if type == :basic
         pile_cards
-        p "Turn #{turn_count}: #{winner} won #{@spoils_of_war.length} cards"
+        p "Turn #{@turn_count}: #{winner} won #{@spoils_of_war.length} cards"
         award_spoils(winner)
       elsif type == :war
         pile_cards
-        p "Turn #{turn_count}: WAR - #{winner} won #{@spoils_of_war.length} cards"
+        p "Turn #{@turn_count}: WAR - #{winner} won #{@spoils_of_war.length} cards"
         award_spoils(winner)
       else
         pile_cards
-        p "Turn #{turn_count}: *mutually assured destruction* 6 cards removed from play"
+        p "Turn #{@turn_count}: *mutually assured destruction* 6 cards removed from play"
       end
-      turn_count += 1
+      @turn_count += 1
     end
   end
 end

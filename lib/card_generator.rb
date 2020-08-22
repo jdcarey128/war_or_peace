@@ -11,7 +11,7 @@ class CardGenerator
   def cards
     split_array = []
     @cards_array.map {|card| split_array << card.split(', ')}
-    split_array.map do |value, suit, rank|
+    split_array.shuffle.map do |value, suit, rank|
       Card.new(suit.downcase.to_sym, value, rank.to_i)
     end
   end

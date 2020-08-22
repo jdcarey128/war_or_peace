@@ -35,9 +35,21 @@ club_cards.shuffle.each do |suit, value, rank|
   cards << Card.new(suit, value, rank)
 end
 
-deck = Deck.new(cards.shuffle.shuffle)
+cards.shuffle.shuffle
 
-player1 = Player.new("Megan", deck.cards[0..25])
-player2 = Player.new("Aurora", deck.cards[26..52])
+deck1 = Deck.new(cards[0..25])
+deck2 = Deck.new(cards[26..52])
 
-require "pry"; binding.pry
+deck_count = deck1.cards.length + deck2.cards.length
+
+player1 = Player.new("Megan", deck1)
+player2 = Player.new("Aurora", deck2)
+turn = Turn.new(player1, player2)
+
+p """Welcome to War! (or Peace) This game will be played with #{deck_count} cards.
+The players today are #{player1.name} and #{player2.name}.
+Type 'GO' to start the game!"""
+
+start = gets.chomp
+
+turn.start_gameplay if start == ""

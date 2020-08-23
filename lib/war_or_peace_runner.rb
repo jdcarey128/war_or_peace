@@ -25,4 +25,4 @@ until start == "go"
   start = gets.chomp.downcase
 end
 
-turn.start_gameplay
+turn.gameplay

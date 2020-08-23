@@ -27,18 +27,7 @@ class CardGeneratorTest < Minitest::Test
   def test_it_generates_all_cards_in_file
 
     #assert_equal @cards, @generator.cards aren't equal because of diff object_id
-
-    require "pry"; binding.pry
-    
-    assert_equal @cards.first.rank, @generator.cards.first.rank
-    assert_equal @cards.first.value, @generator.cards.first.value
-    assert_equal @cards.first.suit, @generator.cards.first.suit
-    assert_equal @cards[1].rank, @generator.cards[1].rank
-    assert_equal @cards[1].value, @generator.cards[1].value
-    assert_equal @cards[1].suit, @generator.cards[1].suit
-    assert_equal @cards.last.rank, @generator.cards.last.rank
-    assert_equal @cards.last.value, @generator.cards.last.value
-    assert_equal @cards.last.suit, @generator.cards.last.suit
+    #also, how do I test for specific cards when I use a shuffle method?
     assert_equal @cards.length, @generator.cards.length
   end
 

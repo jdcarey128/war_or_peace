@@ -83,7 +83,7 @@ class Turn
     end
   end
 
-  def start_gameplay
+  def gameplay
     until continue_game? == false
       if type == :basic
         pile_cards

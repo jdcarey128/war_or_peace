@@ -142,14 +142,14 @@ class TurnTest < Minitest::Test
 
   def test_game_ends_when_player_does_not_have_enough_cards_type_war
 
-    @turn_war.start_gameplay
+    @turn_war.gameplay
 
     assert_equal "Aurora", @turn_war.winner
   end
 
   def test_game_ends_when_player_does_not_have_enough_cards_type_mutually_destructive
 
-    @turn_dest.start_gameplay
+    @turn_dest.gameplay
     winner = @turn_dest.winner
     game_winner = @turn_dest.game_winner
 
